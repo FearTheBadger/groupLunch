@@ -78,11 +78,11 @@ controller.hears('groupLunch', ['direct_message', 'direct_mention'], function (b
 
 askToStart = function(response, convo) {
   convo.ask("Would you like to set up a group lunch?", function(response, convo) {
-    if (response == 'Yes') {
+//    if (response == 'Yes') {
       convo.say("Excelent")
-    } else {
-      convo.say("Too Bad")
-    }
+//    } else {
+//      convo.say("Too Bad")
+//    }
   });
 }
 
