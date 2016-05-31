@@ -110,11 +110,26 @@ controller.hears(['group lunch'], 'direct_message', function(bot,message) {
 
 askPlace = function(response, convo) {
   convo.ask('Where are you going?', function(response, convo) {
-    convo.say("excelent, you said: " + response.text);
+    convo.say("Location: " + response.text);
+    askTime(response, convo);
     convo.next();
   });
 }
 
+askTime = function(response, convo) {
+  convo.ask('What time do you want to go?', function(response, convo) {
+    convo.say("Time: " + response.text);
+    askLimit(response, convo);
+    convo.next();
+  });
+}
+
+askLimit = function(response, convo) {
+  convo.ask('What is your person limit?', function(response, convo) {
+    convo.say("Limit: " + response.text);
+    convo.next();
+  });
+}
 
 controller.hears('.*', ['direct_message', 'direct_mention'], function (bot, message) {
   bot.reply(message, 'Sorry <@' + message.user + '>, I don\'t understand. \n')
