@@ -83,7 +83,7 @@ askToStart = function(response, convo) {
     } else {
       convo.say("Too Bad")
     }
-  })
+  });
 })
     //  crontroller.hears('Yes', '.*', function (bot, message) {
     //  //    bot.reply(message, 'Excellent')
