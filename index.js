@@ -111,6 +111,7 @@ controller.hears(['group lunch'], 'direct_message', function(bot,message) {
 askPlace = function(response, convo) {
   convo.ask('Where are you going?', function(response, convo) {
     convo.say("Location: " + response.text);
+    controller.storage.users.save({id: response.user, loc:response.text});
     askTime(response, convo);
     convo.next();
   });
@@ -118,6 +119,7 @@ askPlace = function(response, convo) {
 
 askTime = function(response, convo) {
   convo.ask('What time do you want to go?', function(response, convo) {
+//    convo.say("Location: " + controller.storage.users.get({id: response.user, loc:res.text);
     convo.say("Time: " + response.text);
     askLimit(response, convo);
     convo.next();
