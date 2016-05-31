@@ -71,8 +71,20 @@ controller.hears(['attachment'], ['direct_message', 'direct_mention'], function 
   })
 })
 
+//controller.hears('groupLunch', ['ambient'], function (bot, message) {
 controller.hears('groupLunch', ['direct_message', 'direct_mention'], function (bot, message) {
-  bot.reply(message, 'Would you like to set up a group lunch?')
+  bot.startConversation(message, askToStart);
+})
+
+askToStart = function(response, convo) {
+  convo.ask("Would you like to set up a group lunch?", function(response, convo) {
+    if (response == 'Yes') {
+      convo.say("Excelent")
+    } else {
+      convo.say("Too Bad")
+    }
+  })
+})
     //  crontroller.hears('Yes', '.*', function (bot, message) {
     //  //    bot.reply(message, 'Excellent')
     //  //  })
