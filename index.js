@@ -111,16 +111,10 @@ askPlace = function(response, convo) {
   convo.ask('Where are you going?', function(response, convo) {
     convo.say("Location: " + response.text);
 
-    controller.storage.users.get(message.user, function(err, user) {
-      if (!user) {
-        user = {
-          id: message:user,
-        };
+    controller.storage.users.save({id:message.user, loc:response.text}, function(err) {
+      if (err) {
+        bot.reply(message, 'failed to save loc');
       }
-    }
-    user.loc = response.text;
-    controller.storage.users.save(user, function(err, id) {
-      bot.reply(message, 'saved loc');
     });
 
     askTime(response, convo);
