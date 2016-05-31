@@ -71,6 +71,13 @@ controller.hears(['attachment'], ['direct_message', 'direct_mention'], function 
   })
 })
 
+controller.hears('groupLunch', ['direct_message', 'direct_mention'], function (bot, message) {
+  bot.reply(message, 'Would you like to set up a group lunch?')
+    //  crontroller.hears('Yes', '.*', function (bot, message) {
+    //  //    bot.reply(message, 'Excellent')
+    //  //  })
+})
+
 controller.hears('.*', ['direct_message', 'direct_mention'], function (bot, message) {
   bot.reply(message, 'Sorry <@' + message.user + '>, I don\'t understand. \n')
 })
