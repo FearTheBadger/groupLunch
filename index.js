@@ -83,7 +83,6 @@ controller.hears(['group lunch'], 'direct_message', function(bot,message) {
           convo.say('Great! I will continue...');
           askPlace(response, convo);
           convo.next();
-
         }
       },
       {
@@ -114,6 +113,7 @@ askPlace = function(response, convo) {
     convo.next();
   }, {'key', 'loc'});
 
+/*
   convo.on('end', function(convo) {
     controller.storage.users.get(user, function(err, user) {
       if (!user) {
@@ -128,6 +128,7 @@ askPlace = function(response, convo) {
     });
     askTime(response, convo);
   });
+ */
 }
 
 askTime = function(response, convo) {
