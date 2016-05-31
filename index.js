@@ -110,10 +110,12 @@ controller.hears(['group lunch'], 'direct_message', function(bot,message) {
 askPlace = function(response, convo) {
   convo.ask('Where are you going?', function(response, convo) {
     convo.say("Location: " + response.text);
+    askTime(response, convo);
     convo.next();
-  }, {'key', 'loc'});
+  });
 
 /*
+  }, {'key', 'loc'});
   convo.on('end', function(convo) {
     controller.storage.users.get(user, function(err, user) {
       if (!user) {
@@ -126,7 +128,6 @@ askPlace = function(response, convo) {
         bot.reply(message, 'saved loc');
       });
     });
-    askTime(response, convo);
   });
  */
 }
