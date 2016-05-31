@@ -71,28 +71,13 @@ controller.hears(['attachment'], ['direct_message', 'direct_mention'], function 
   })
 })
 
-/*
-//controller.hears('groupLunch', ['ambient'], function (bot, message) {
-controller.hears('groupLunch', ['direct_message', 'direct_mention'], function (bot, message) {
+controller.hears(['group lunch'], 'direct_message', function(bot,message) {
   bot.startConversation(message, askToStart);
 })
 
-askToStart = function(response, convo) {
-  convo.ask("Would you like to set up a group lunch?", function(response, convo) {
-//    if (response == 'Yes') {
-      convo.say("Excelent")
-//    } else {
-//      convo.say("Too Bad")
-//    }
-  });
-}
-*/
-controller.hears(['question me'], 'direct_message', function(bot,message) {
-
-  // start a conversation to handle this response.
-  bot.startConversation(message,function(err,convo) {
-
-    convo.ask('Shall we proceed Say YES, NO or DONE to quit.',[
+// start a conversation to handle this response.
+askToStart = function(err, convo) {
+    convo.ask('Do you want to set up a group lunch?',[
       {
         pattern: 'done',
         callback: function(response,convo) {
@@ -127,9 +112,7 @@ controller.hears(['question me'], 'direct_message', function(bot,message) {
       }
     ]);
 
-  })
-
-});
+}
 
 controller.hears('.*', ['direct_message', 'direct_mention'], function (bot, message) {
   bot.reply(message, 'Sorry <@' + message.user + '>, I don\'t understand. \n')
