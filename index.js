@@ -87,7 +87,7 @@ askToStart = function(response, convo) {
   });
 }
 */
-controller.hears(['question me'], 'message_received', function(bot,message) {
+controller.hears(['question me'], 'direct_message', function(bot,message) {
 
   // start a conversation to handle this response.
   bot.startConversation(message,function(err,convo) {
