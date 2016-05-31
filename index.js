@@ -72,24 +72,16 @@ controller.hears(['attachment'], ['direct_message', 'direct_mention'], function 
 })
 
 controller.hears(['group lunch'], 'direct_message', function(bot,message) {
-  bot.startConversation(message, askToStart);
-})
 
-// start a conversation to handle this response.
-askToStart = function(err, convo) {
+  // start a conversation to handle this response.
+  bot.startConversation(message,function(err,convo) {
+
     convo.ask('Do you want to set up a group lunch?',[
-      {
-        pattern: 'done',
-        callback: function(response,convo) {
-          convo.say('OK you are done!');
-          convo.next();
-        }
-      },
       {
         pattern: bot.utterances.yes,
         callback: function(response,convo) {
           convo.say('Great! I will continue...');
-          // do something else...
+          askPlace(response, convo);
           convo.next();
 
         }
@@ -112,7 +104,17 @@ askToStart = function(err, convo) {
       }
     ]);
 
+  })
+
+});
+
+askPlace = function(response, convo) {
+  convo.ask('Where are you going?', function(response, convo) {
+    convo.say("excelent, you said: " + response.text);
+    convo.next();
+  });
 }
+
 
 controller.hears('.*', ['direct_message', 'direct_mention'], function (bot, message) {
   bot.reply(message, 'Sorry <@' + message.user + '>, I don\'t understand. \n')
