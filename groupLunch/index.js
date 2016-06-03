@@ -39,7 +39,7 @@ function askTime(response, convo) {
 }
 
  function askLimit(response, convo) {
-  convo.ask('What is the max disired group size?', function(response, convo) {
+  convo.ask('What is the max desired group size?', function(response, convo) {
     limit = response.text;
     writeData(response, convo);
     convo.next();
@@ -79,7 +79,7 @@ exports.listGroup = function(response, convo, chooseGroup, controller) {
   });
 
   if (tmp_avail <= 0 || tmp_limit <= 0) {
-    convo.say('Sorry, nothing is available.\n\nYou should `glstart` to create a group.');
+    convo.say('Sorry, nothing is available.\n\nYou should `gladd` to create a group.');
     convo.next
   }
 
@@ -119,7 +119,7 @@ exports.cancelGroup = function(response, convo) {
         if (err) {
           convo.say('failed to save cancled Group: ' + err);
         }
-        convo.say('Group Canceled');
+        convo.say('Group Canceled\n\n There are several people who you have now made cry.');
       });
     } else {
       convo.say('Good you would have made the rest of the group sad.')

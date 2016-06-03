@@ -35,15 +35,6 @@ controller.on('bot_channel_join', function (bot, message) {
   bot.reply(message, "I'm here!")
 })
 
-controller.hears(['hello', 'hi'], ['direct_mention'], function (bot, message) {
-  bot.reply(message, 'Hello.')
-})
-
-controller.hears(['hello', 'hi'], ['direct_message'], function (bot, message) {
-  bot.reply(message, 'Hello.')
-  bot.reply(message, 'It\'s nice to talk to you directly.')
-})
-
 controller.hears('.*', ['mention'], function (bot, message) {
   bot.reply(message, 'You really do care about me. :heart:')
 })
@@ -85,7 +76,7 @@ controller.hears(['gltodo'], 'direct_message', function(bot,message) {
 
 
 // Start Group Lunch
-controller.hears(['glstart'], 'direct_message', function(bot,message) {
+controller.hears(['gladd'], 'direct_message', function(bot,message) {
   // start a conversation to handle this response.
   bot.startConversation(message,function(err,convo) {
     groupLunch.askPlace(message, convo, controller);
