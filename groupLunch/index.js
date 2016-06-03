@@ -4,21 +4,31 @@ var limit = null;
 var cont = null;
 
 // ToDo
-exports.todo = function(bot,message) {
-  var todo = '`Hook into OpenTable.`\n' +
-    '`setup public message for notifications and list of available choices.`\n' +
-    '`switch to private message for joining.`\n' +
-    '`send global message to a specific group to say there is a new lunch spot.`\n' +
-    '`get a private message when someone joins your lunch group.`\n' +
-    '`create and set a random meeting spot.`\n' +
-    '`get a private message on where to meet.`\n' +
-    '`allow for the choice to randomly pick a place.`\n' +
-    '`don\'t allow for a creator to join any group.`\n' +
-    '`fix cancel so that you either leave a group, cancel the group, or it does nothing.`\n' +
-    '`create a reminger timer if there are available slots with N minutes before departure time`\n' +
-    '`create logic/error checks.`'
+exports.todo = function(bot, message) {
+  var todo = '* Hook into OpenTable.\n' +
+    '* setup public message for notifications and list of available choices.\n' +
+    '* switch to private message for joining.\n' +
+    '* send global message to a specific group to say there is a new lunch spot.\n' +
+    '* get a private message when someone joins your lunch group.\n' +
+    '* create and set a random meeting spot.\n' +
+    '* get a private message on where to meet.\n' +
+    '* allow for the choice to randomly pick a place.\n' +
+    '* don\'t allow for a creator to join any group.\n' +
+    '* fix cancel so that you either leave a group, cancel the group, or it does nothing.\n' +
+    '* create a reminder timer if there are available slots with N minutes before departure time\n' +
+    '* create logic/error checks.'
 
   bot.reply(message,todo);
+}
+
+exports.cmds = function(bot, message) {
+  var cmds = '`gladd` Add a new Group Lunch.\n' +
+    '`gllist` List out the current available Groups.\n' +
+    '`gljoin` Join one of the current Groups.\n' +
+    '`glcancel` Cancel the current group you are in.\n' +
+    '`gltodo` List all of the things still to be done.\n' +
+    '`help` Print this statement.\n'
+  bot.reply(message,cmds);
 }
 
 exports.askPlace = function(response, convo, controller) {
@@ -117,7 +127,7 @@ exports.cancelGroup = function(response, convo) {
     if ( response.text == "yes" ) {
       cont.storage.users.save({id:response.user, loc:undefined, time:undefined, limit:0, available:0}, function(err) {
         if (err) {
-          convo.say('failed to save cancled Group: ' + err);
+          convo.say('failed to save canceled Group: ' + err);
         }
         convo.say('Group Canceled\n\n There are several people who you have now made cry.');
       });
