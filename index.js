@@ -1,4 +1,5 @@
 var Botkit = require('botkit')
+var groupLunch = require('./groupLunch')
 
 var token = process.env.SLACK_TOKEN
 
@@ -77,146 +78,40 @@ controller.hears(['attachment'], ['direct_message', 'direct_mention'], function 
 
 
 // ToDo
-controller.hears(['todo'], 'direct_message', function(bot,message) {
-  var todo = '`Hook into OpenTable.`\n' +
-    '`switch from Group message to private message.`\n' +
-    '`send global message to a specific group to say there is a new lunch spot.`\n' +
-    '`get a private message when someone joins your lunch group.`\n' +
-    '`set a random meeting spot.`\n' +
-    '`allow for the choice to randomly pick a place.`\n' +
-    '`don\'t allow for a creator to join another group.`\n' +
-    '`allow cancling of a group.`\n' +
-    '`create logic checks.`'
-
-  bot.reply(message,todo);
+controller.hears(['gltodo'], 'direct_message', function(bot,message) {
+  groupLunch.todo(bot,message);
 });
 
 
 
 // Start Group Lunch
-controller.hears(['gl'], 'direct_message', function(bot,message) {
+controller.hears(['glstart'], 'direct_message', function(bot,message) {
   // start a conversation to handle this response.
   bot.startConversation(message,function(err,convo) {
-    askPlace(message, convo);
-  })
-});
-
-function askPlace(response, convo) {
-  convo.ask('Where are you going?', function(response, convo) {
-    loc = response.text;
-    askTime(response, convo);
-    convo.next();
-  });
-}
-
-function askTime(response, convo) {
-  convo.ask('What time do you want to go?', function(response, convo) {
-    time = response.text;
-    askLimit(response, convo);
-    convo.next();
-  });
-}
-
- function askLimit(response, convo) {
-  convo.ask('What is your person limit?', function(response, convo) {
-    limit = response.text;
-    writeData(response, convo);
-    convo.next();
-  });
-}
-
- function writeData(response, convo) {
-  var available = limit - 1;
-  controller.storage.users.save({id:response.user, loc:loc, time:time, limit:limit, available:available, init:true}, function(err) {
-    if (err) {
-      convo.say('failed to save Limit: ' + err);
-    }
-  });
-
-  convo.say('Your lunch group has been started');
-  convo.next();
-}
-
-
-
-// Check Available potentials
-controller.hears(['list'], 'direct_message', function(bot, message) {
-  bot.startConversation(message, function(err, convo) {
-    listGroup(message, convo, false);
+    groupLunch.askPlace(message, convo, controller);
   })
 });
 
 // Check Available potentials
-controller.hears(['join'], 'direct_message', function(bot, message) {
+controller.hears(['gllist'], 'direct_message', function(bot, message) {
   bot.startConversation(message, function(err, convo) {
-    listGroup(message, convo, true);
+    groupLunch.listGroup(message, convo, false, controller);
   })
 });
-
-function listGroup(response, convo, chooseGroup) {
-  var index = null
-  controller.storage.users.all(function(err, all_user) {
-    Object.keys(all_user).forEach(function(key, index) {
-      INDEX = index;
-      controller.storage.users.get(key, function(err, user) {
-        convo.say(INDEX + ')  [Location: ' + user.loc + '] [Time: ' + user.time + '] [Slots: ' + user.available + '/' + user.limit + ']');
-      });
-    });
-  });
-
-  if (chooseGroup) {
-    askAddGroup(response, convo);
-  }
-  convo.next
-}
-
-function askAddGroup(response, convo) {
-  convo.ask('Which group do you want to join?', function(response, convo) {
-    var choice = response.text;
-
-    controller.storage.users.all(function(err, all_user) {
-      Object.keys(all_user).forEach(function(key, index) {
-        convo.say('key: ' + key)
-        if (choice == index ) {
-          controller.storage.users.get(key, function(err, user) {
-            var available = user.available - 1;
-            convo.say('You\'ve joined:\n[Location: ' + user.loc + '] [Time: ' + user.time + ']');
-            controller.storage.users.save({id:key, loc:loc, time:time, limit:limit, available:available}, function(err) {
-              if (err) {
-                convo.say('failed to save new group: ' + err);
-              }
-            });
-          });
-        }
-      });
-    });
-
-    convo.next();
-  });
-}
-
-
 
 // Check Available potentials
-controller.hears(['cancel'], 'direct_message', function(bot, message) {
+controller.hears(['gljoin'], 'direct_message', function(bot, message) {
   bot.startConversation(message, function(err, convo) {
-    cancelGroup(message, convo);
+    groupLunch.listGroup(message, convo, true, controller);
   })
 });
 
-function cancelGroup(response, convo) {
-  convo.ask('Are you sure you want to cancel?', function(response, convo) {
-    if ( response.text == "yes" ) {
-      controller.storage.users.save({id:response.user, undefined}, function(err) {
-        if (err) {
-          convo.say('failed to save cancled Group: ' + err);
-        }
-        convo.say('Group Canceled');
-      });
-    }
-    convo.next();
-  });
-}
+// Check Available potentials
+controller.hears(['glcancel'], 'direct_message', function(bot, message) {
+  bot.startConversation(message, function(err, convo) {
+    groupLunch.cancelGroup(message, convo);
+  })
+});
 
 controller.hears('.*', ['direct_message', 'direct_mention'], function (bot, message) {
   bot.reply(message, 'Sorry <@' + message.user + '>, I don\'t understand. \n')
