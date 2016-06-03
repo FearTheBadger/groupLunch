@@ -39,6 +39,7 @@ controller.hears('.*', ['mention'], function (bot, message) {
   bot.reply(message, 'You really do care about me. :heart:')
 })
 
+/*
 controller.hears('help', ['direct_message', 'direct_mention'], function (bot, message) {
   var help = 'I will respond to the following messages: \n' +
       '`bot hi` for a simple message.\n' +
@@ -47,6 +48,7 @@ controller.hears('help', ['direct_message', 'direct_mention'], function (bot, me
       '`bot help` to see this again.'
   bot.reply(message, help)
 })
+*/
 
 controller.hears(['attachment'], ['direct_message', 'direct_mention'], function (bot, message) {
   var text = 'Beep Beep Boop is a ridiculously simple hosting platform for your Slackbots.'
@@ -71,6 +73,11 @@ controller.hears(['attachment'], ['direct_message', 'direct_mention'], function 
 // ToDo
 controller.hears(['gltodo'], 'direct_message', function(bot,message) {
   groupLunch.todo(bot,message);
+});
+
+// Cmds
+controller.hears(['help'], 'direct_message', function(bot,message) {
+  groupLunch.cmds(bot,message);
 });
 
 
