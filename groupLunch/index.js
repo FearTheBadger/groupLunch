@@ -6,14 +6,17 @@ var cont = null;
 // ToDo
 exports.todo = function(bot,message) {
   var todo = '`Hook into OpenTable.`\n' +
-    '`switch from Group message to private message.`\n' +
+    '`setup public message for notifications and list of available choices.`\n' +
+    '`switch to private message for joining.`\n' +
     '`send global message to a specific group to say there is a new lunch spot.`\n' +
     '`get a private message when someone joins your lunch group.`\n' +
-    '`set a random meeting spot.`\n' +
+    '`create and set a random meeting spot.`\n' +
+    '`get a private message on where to meet.`\n' +
     '`allow for the choice to randomly pick a place.`\n' +
-    '`don\'t allow for a creator to join another group.`\n' +
-    '`allow cancling of a group.`\n' +
-    '`create logic checks.`'
+    '`don\'t allow for a creator to join any group.`\n' +
+    '`fix cancel so that you either leave a group, cancel the group, or it does nothing.`\n' +
+    '`create a reminger timer if there are available slots with N minutes before departure time`\n' +
+    '`create logic/error checks.`'
 
   bot.reply(message,todo);
 }
@@ -36,7 +39,7 @@ function askTime(response, convo) {
 }
 
  function askLimit(response, convo) {
-  convo.ask('What is your person limit?', function(response, convo) {
+  convo.ask('What is the max disired group size?', function(response, convo) {
     limit = response.text;
     writeData(response, convo);
     convo.next();
@@ -118,6 +121,8 @@ exports.cancelGroup = function(response, convo) {
         }
         convo.say('Group Canceled');
       });
+    } else {
+      convo.say('Good you would have made the rest of the group sad.')
     }
     convo.next();
   });
